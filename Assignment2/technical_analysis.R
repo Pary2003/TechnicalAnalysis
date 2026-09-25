@@ -51,3 +51,56 @@ calculate_statistics <- function(stock_data) {
     Standard_Deviation = sd_price
   ))
 }
+
+# Display imported stock data
+stock_data <- import_stock_data("AAPL", "2026-01-01", "2026-09-01")
+head(stock_data)
+
+# Calculate and display statistics
+statistics <- calculate_statistics(stock_data)
+print(statistics)
+
+# Visualize closing prices
+chartSeries(
+  stock_data,
+  name = "AAPL Stock Price",
+  theme = "white"
+)
+
+# Visualize 20-day moving average
+chartSeries(
+  stock_data,
+  name = "AAPL Stock Price with 20-Day Moving Average",
+  theme = "white",
+  TA = "addSMA(n = 20)"
+)
+
+# Read all stock symbols from portfolio.txt
+symbols <- scan("Assignment2/portfolio.txt", what = character())
+
+# Process all stocks in the portfolio
+for (symbol in symbols) {
+  
+  stock_data <- import_stock_data(
+    symbol,
+    "2026-01-01",
+    "2026-09-01"
+  )
+  
+  cat("\nStock:", symbol, "\n")
+  
+  # Display imported stock data
+  print(head(stock_data))
+  
+  # Calculate and display statistics
+  statistics <- calculate_statistics(stock_data)
+  print(statistics)
+  
+  # Display stock price with 20-day moving average
+  chartSeries(
+    stock_data,
+    name = paste(symbol, "Stock Price with 20-Day Moving Average"),
+    theme = "white",
+    TA = "addSMA(n = 20)"
+  )
+}
